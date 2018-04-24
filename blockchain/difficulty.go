@@ -5,6 +5,7 @@
 package blockchain
 
 import (
+	"fmt"
 	"math/big"
 	"time"
 
@@ -167,6 +168,7 @@ func (b *BlockChain) calcEasiestDifficulty(bits uint32, duration time.Duration) 
 	if b.chainParams.ReduceMinDifficulty {
 		reductionTime := int64(b.chainParams.MinDiffReductionTime /
 			time.Second)
+		fmt.Println(reductionTime)
 		if durationVal > reductionTime {
 			return b.chainParams.PowLimitBits
 		}

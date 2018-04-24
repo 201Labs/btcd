@@ -24,7 +24,7 @@ var (
 
 	// mainPowLimit is the highest proof of work value a Bitcoin block can
 	// have for the main network.  It is the value 2^224 - 1.
-	mainPowLimit = new(big.Int).Sub(new(big.Int).Lsh(bigOne, 255), bigOne)
+	mainPowLimit, _ = new(big.Int).SetString("0x0fffff000000000000000000000000000000000000000000000000000000", 0)
 
 	// regressionPowLimit is the highest proof of work value a Bitcoin block
 	// can have for the regression test network.  It is the value 2^255 - 1.
@@ -232,7 +232,7 @@ var MainNetParams = Params{
 	GenesisBlock:             &genesisBlock,
 	GenesisHash:              &genesisHash,
 	PowLimit:                 mainPowLimit,
-	PowLimitBits:             504365055,
+	PowLimitBits:             0x207fffff,
 	BIP0034Height:            710000, // 000000000000024b89b42a942fe0d9fea3bb44ab7bd1b19115dd6a759c0808b8
 	BIP0065Height:            918684, // 000000000000000004c2b624ed5d7756c508d90fd0da2c7c679febfa6c4735f0
 	BIP0066Height:            811879, // 00000000000000000379eaa19dce8c9b722d46ae6a57c2f1a988119488b50931
@@ -241,9 +241,9 @@ var MainNetParams = Params{
 	TargetTimespan:           time.Hour * 24 * 3, // 14 days
 	TargetTimePerBlock:       time.Second * 15,   // 10 minutes
 	RetargetAdjustmentFactor: 4,                  // 25% less, 400% more
-	ReduceMinDifficulty:      false,
-	MinDiffReductionTime:     0,
-	GenerateSupported:        false,
+	ReduceMinDifficulty:      true,
+	MinDiffReductionTime:     time.Second * 1,
+	GenerateSupported:        true,
 
 	// Checkpoints ordered from oldest to newest.
 	Checkpoints: []Checkpoint{},
@@ -280,11 +280,11 @@ var MainNetParams = Params{
 	Bech32HRPSegwit: "bc", // always bc for main net
 
 	// Address encoding magics
-	PubKeyHashAddrID:        0x00, // starts with 1
-	ScriptHashAddrID:        0x05, // starts with 3
-	PrivateKeyID:            0x80, // starts with 5 (uncompressed) or K (compressed)
-	WitnessPubKeyHashAddrID: 0x06, // starts with p2
-	WitnessScriptHashAddrID: 0x0A, // starts with 7Xh
+	PubKeyHashAddrID:        0x26, // starts with G
+	ScriptHashAddrID:        0x7D, // starts with s
+	PrivateKeyID:            0x82, // starts with u
+	WitnessPubKeyHashAddrID: 0x03, // starts with 3
+	WitnessScriptHashAddrID: 0x08, // starts with 4
 
 	// BIP32 hierarchical deterministic extended key magics
 	HDPrivateKeyID: [4]byte{0x04, 0x88, 0xad, 0xe4}, // starts with xprv
@@ -318,7 +318,7 @@ var RegressionNetParams = Params{
 	TargetTimePerBlock:       time.Minute * 10,    // 10 minutes
 	RetargetAdjustmentFactor: 4,                   // 25% less, 400% more
 	ReduceMinDifficulty:      true,
-	MinDiffReductionTime:     time.Minute * 20, // TargetTimePerBlock * 2
+	MinDiffReductionTime:     time.Second * 1, // TargetTimePerBlock * 2
 	GenerateSupported:        true,
 
 	// Checkpoints ordered from oldest to newest.
